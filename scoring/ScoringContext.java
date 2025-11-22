@@ -1,4 +1,3 @@
-
 package com.Scoring;
 public class ScoringContext {
     private Scoring method;
@@ -11,7 +10,6 @@ public class ScoringContext {
         this.method = method;
     }
 
-    public int preformCal(Question question , String userAns){
-        return (method.calScore( question , userAns));
+    public int preformCal(player ,question , userAns));
     }
 }
