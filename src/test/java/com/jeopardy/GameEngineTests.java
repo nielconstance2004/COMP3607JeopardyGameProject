@@ -1,7 +1,8 @@
-package com.jeopardy.test;
+package com.jeopardy;
 
 import org.junit.jupiter.api.*;
 import com.jeopardy.model.Player;
+import com.jeopardy.engine.GameEngine;
 import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.*;

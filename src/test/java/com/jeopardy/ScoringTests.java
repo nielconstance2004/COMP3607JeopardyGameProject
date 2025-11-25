@@ -1,7 +1,9 @@
-package com.jeopardy.test;
+package com.jeopardy;
 
 import com.jeopardy.model.Player;
 import com.jeopardy.model.Question;
+import com.jeopardy.model.QuestionBuilder;
+import com.jeopardy.scoring.SimpleScoringStrategy;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -11,7 +13,7 @@ class ScoringTests {
     @Test
     void correctAnswer() {
         Player p = new Player("P1", "Bob");
-        Question q = new Question.QuestionBuilder()
+        Question q = new QuestionBuilder()
                 .value(100)
                 .answer("Answer")
                 .build();
@@ -25,7 +27,7 @@ class ScoringTests {
     @Test
     void wrongAnswerPenalty() {
         Player p = new Player("P1", "Bob");
-        Question q = new Question.QuestionBuilder()
+        Question q = new QuestionBuilder()
                 .value(50)
                 .answer("Answer")
                 .build();
@@ -39,7 +41,7 @@ class ScoringTests {
     @Test
     void wrongAnswerNoPenalty() {
         Player p = new Player("P1", "Bob");
-        Question q = new Question.QuestionBuilder()
+        Question q = new QuestionBuilder()
                 .value(50)
                 .answer("Answer")
                 .build();

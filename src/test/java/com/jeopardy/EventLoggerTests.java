@@ -1,9 +1,10 @@
-package com.jeopardy.test;
+package com.jeopardy;
 
 import org.junit.jupiter.api.*;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
+import com.jeopardy.engine.EventLogger;
 
 import static org.junit.jupiter.api.Assertions.*;
 

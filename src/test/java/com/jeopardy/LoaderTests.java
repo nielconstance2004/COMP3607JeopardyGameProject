@@ -1,6 +1,10 @@
-package com.jeopardy.test;
+package com.jeopardy;
 
 import com.jeopardy.model.Question;
+import com.jeopardy.loaders.CsvQuestionLoader;
+import com.jeopardy.loaders.JsonQuestionLoader;
+import com.jeopardy.loaders.XmlQuestionLoader;
+import com.jeopardy.loaders.QuestionLoaderFactory;
 import org.junit.jupiter.api.*;
 
 import java.io.File;
