@@ -27,28 +27,61 @@ public class CsvQuestionLoader implements QuestionLoader { // implement Question
                     if (looksLikeHeader) { headerSkipped = true; continue; } // skip header line
                     headerSkipped = true; // set flag after first line
                 } // end header skip check
-                // Expecting at least: category,value,question,answer
+                // Two common CSV formats supported:
+                // 1) category,value,question,answer[,choiceA,choiceB,choiceC,choiceD]
+                // 2) category,value,question,choiceA,choiceB,choiceC,choiceD,correctAnswer
                 if (parts.length < 4) continue; // skip invalid lines
                 String category = parts[0].trim().replaceAll("\"", ""); // get category
                 int value = 0; // initialize value
                 try { value = Integer.parseInt(parts[1].trim()); } catch (Exception ex) { value = 0; } // parse value
-                 String questionText = parts[2].trim().replaceAll("\"", ""); // get question text
-                // optional choices in CSV: choiceA,choiceB,choiceC,choiceD (columns 4..7)
-                String a = parts.length > 3 ? parts[3].trim().replaceAll("\"", "") : null; // get choice A
-                String b = parts.length > 4 ? parts[4].trim().replaceAll("\"", "") : null; // get choice B
-                String c = parts.length > 5 ? parts[5].trim().replaceAll("\"", "") : null; // get choice C
-                String d = parts.length > 6 ? parts[6].trim().replaceAll("\"", "") : null; // get choice D
-                String answer = parts[7].trim().replaceAll("\"", ""); // get answer
-        list.add(new com.jeopardy.model.QuestionBuilder() // build question
-            .category(category) // set category
-            .value(value) // set value
-            .text(questionText) // set question text
-            .answer(answer) // set answer
-            .choiceA(a) // set choice A
-            .choiceB(b) // set choice B
-            .choiceC(c) // set choice C
-            .choiceD(d) // set choice D
-            .build()); // build and add to list
+                String questionText = parts[2].trim().replaceAll("\"", ""); // get question text
+
+                String a = null, b = null, c = null, d = null, answer = null;
+                if (parts.length >= 8) {
+                    // ambiguous: either ...,answer,choiceA..D OR ...,choiceA..D,correctAnswer
+                    String p3 = parts[3].trim().replaceAll("\"", "");
+                    boolean p3MatchesChoice = false;
+                    for (int idx = 4; idx <= 7 && idx < parts.length; idx++) {
+                        if (p3.equalsIgnoreCase(parts[idx].trim().replaceAll("\"", ""))) { p3MatchesChoice = true; break; }
+                    }
+                    if (p3MatchesChoice) {
+                        // format: ...,answer,choiceA,choiceB,choiceC,choiceD
+                        answer = p3;
+                        a = parts.length > 4 ? parts[4].trim().replaceAll("\"", "") : null;
+                        b = parts.length > 5 ? parts[5].trim().replaceAll("\"", "") : null;
+                        c = parts.length > 6 ? parts[6].trim().replaceAll("\"", "") : null;
+                        d = parts.length > 7 ? parts[7].trim().replaceAll("\"", "") : null;
+                    } else {
+                        // assume format with choices then correct answer at the end
+                        a = parts[3].trim().replaceAll("\"", "");
+                        b = parts[4].trim().replaceAll("\"", "");
+                        c = parts[5].trim().replaceAll("\"", "");
+                        d = parts[6].trim().replaceAll("\"", "");
+                        answer = parts[7].trim().replaceAll("\"", "");
+                    }
+                } else {
+                    // fallback: answer in column 3, optional choices follow
+                    answer = parts[3].trim().replaceAll("\"", "");
+                    a = parts.length > 4 ? parts[4].trim().replaceAll("\"", "") : null;
+                    b = parts.length > 5 ? parts[5].trim().replaceAll("\"", "") : null;
+                    c = parts.length > 6 ? parts[6].trim().replaceAll("\"", "") : null;
+                    d = parts.length > 7 ? parts[7].trim().replaceAll("\"", "") : null;
+                }
+
+                // normalize empty strings to null
+                if (a != null && a.isEmpty()) a = null; if (b != null && b.isEmpty()) b = null; if (c != null && c.isEmpty()) c = null; if (d != null && d.isEmpty()) d = null;
+                if (answer != null && answer.isEmpty()) answer = null;
+
+                list.add(new com.jeopardy.model.QuestionBuilder() // build question
+                    .category(category) // set category
+                    .value(value) // set value
+                    .text(questionText) // set question text
+                    .answer(answer) // set answer
+                    .choiceA(a) // set choice A
+                    .choiceB(b) // set choice B
+                    .choiceC(c) // set choice C
+                    .choiceD(d) // set choice D
+                    .build()); // build and add to list
             } // end while
         } // end try
         return list; // return list of questions

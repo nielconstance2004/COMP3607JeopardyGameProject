@@ -145,7 +145,7 @@ public class GameEngine {
                 records.add(tr); // add turn record to list
                 if (logger != null) logger.log(caseId, p.getId(), "ANSWER", cat, value, ans, correct ? "CORRECT" : "WRONG", p.getScore()); // log answer
 
-                System.out.println((correct?"Correct!":"Wrong.") + " Points: " + delta + " New total: " + p.getScore()); // display result
+                System.out.println((correct?"Correct!":"Wrong!") + " Points: " + delta + " New total: " + p.getScore()); // display result
                 // move to next player
 
                 current = (current + 1) % players.size(); // update current player index
