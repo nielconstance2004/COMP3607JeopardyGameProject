@@ -35,7 +35,7 @@ A comprehensive Java implementation of a multi-player Jeopardy game that meets a
 ### Installation & Setup
 ```bash
 # Clone and navigate to project directory
-cd COMP3607JeopardyGameProject
+cd Group33_COMP3607JeopardyGameProject
 
 # Build the project
 mvn clean package
@@ -160,7 +160,6 @@ src/test/java/com/jeopardy/
 ├── ReportTests.java
 └── ExtendedLoaderTests.java
 
-sample_files/
 ├── sample_game_CSV.csv
 ├── sample_game_JSON.json
 ├── sample_game_XML.xml
