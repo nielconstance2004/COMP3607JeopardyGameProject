@@ -8,9 +8,21 @@ import com.jeopardy.report.ReportGenerator; // import ReportGenerator class
 import java.io.File; // import File class
 import java.util.Scanner;
 
-// Main class to run the Jeopardy game
+/**
+ * Main application class for the Multi-Player Jeopardy Game.
+ * Serves as the entry point and coordinates game initialization and execution.
+ * 
+ * @author Group 33
+ * @version 1.0
+ */
 public class Main {
-    // main method - entry point of the application
+    /**
+     * Main method - application entry point.
+     * Initializes game components and manages the game lifecycle.
+     * 
+     * @param args command line arguments (not used)
+     * @throws Exception if game initialization or execution fails
+     */    
     public static void main(String[] args) throws Exception { // start of main method
         System.out.println("Jeopardy Game - Console version"); // print welcome message
         String base = System.getProperty("user.dir"); // get current working directory

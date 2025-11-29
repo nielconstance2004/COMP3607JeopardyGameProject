@@ -9,9 +9,25 @@ import java.util.ArrayList; // for list implementation
 import java.util.List; // for list interface
 import java.util.Map; // for map interface
  
+/**
+ * JSON format question loader implementation.
+ * Supports loading questions from JSON files with multiple format variations.
+ * @author Group 33
+ * @version 1.0
+ */
+
 // JSON question loader implementation
 public class JsonQuestionLoader implements QuestionLoader { // implement QuestionLoader interface
     private final ObjectMapper mapper = new ObjectMapper(); // initialize JSON object mapper
+
+    /**
+     * Loads questions from a JSON file.
+     * Supports multiple JSON structures and nested option formats.
+     * 
+     * @param file the JSON file to load questions from
+     * @return list of Question objects parsed from the JSON file
+     * @throws Exception if file reading or parsing fails
+     */
 
     @Override // override load method
     public List<Question> load(File file) throws Exception { // load questions from file

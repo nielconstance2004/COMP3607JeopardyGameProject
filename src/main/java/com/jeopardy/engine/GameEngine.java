@@ -14,8 +14,13 @@ import java.util.*; // for collections and utilities
 import java.util.stream.Collectors; // for stream operations
 
 /**
- * GameEngine manages gameplay. Singleton for simplicity (demonstrates Singleton pattern).
+ * Main game engine managing Jeopardy gameplay.
+ * Implements Singleton pattern to ensure single instance throughout application.
+ * 
+ * @author Group 33
+ * @version 1.0
  */
+
 public class GameEngine {
     private static GameEngine instance; // singleton instance
 
@@ -26,18 +31,39 @@ public class GameEngine {
     private EventLogger logger; // event logger
     private String caseId = UUID.randomUUID().toString(); // unique case ID
     
-    private GameEngine() {} // private constructor for singleton
+    private GameEngine() {} // private constructor for singleton pattern.
 
-    // get singleton instance
+    /**
+     * Gets the singleton instance of GameEngine.
+     * 
+     * @return the singleton GameEngine instance
+     */
     public static synchronized GameEngine getInstance() { // synchronized to ensure thread safety
         if (instance == null) instance = new GameEngine(); // create new instance if null
         return instance; // return singleton instance
     } // end getInstance method
 
-    // set event logger
+    /**
+     * Sets the event logger for tracking game events.
+     * 
+     * @param logger the EventLogger instance to use
+     */
     public void setLogger(EventLogger logger) { this.logger = logger; } // end setLogger method
+    
+    /**
+     * Sets the scoring strategy for the game.
+     * 
+     * @param strategy the ScoringStrategy to use
+     */
     public void setScoringStrategy(ScoringStrategy strategy) { this.scoringStrategy = strategy; } // end setScoringStrategy method
 
+    /**
+     * Loads questions from the specified file into the game board.
+     * 
+     * @param file the file containing questions in supported format
+     * @throws Exception if file loading or parsing fails
+     * @throws IllegalArgumentException if file format is not supported
+     */
     // load questions from file
     public void loadQuestions(File file) throws Exception { // load questions from specified file
         QuestionLoader loader = QuestionLoaderFactory.getLoader(file); // get appropriate loader for file type
@@ -51,12 +77,19 @@ public class GameEngine {
         if (logger != null) logger.log(caseId, "SYSTEM", "LOAD_QUESTIONS", "", null, file.getName(), "OK", 0); // log question loading
     } // end loadQuestions method
 
-    // add player without limit
+    /**
+     * Adds a player to the game without limit enforcement.
+     * 
+     * @param p the player to add
+     */
     public void addPlayer(Player p) { players.add(p); if (logger != null) logger.log(caseId, p.getId(), "PLAYER_JOIN", "", null, p.getName(), "OK", p.getScore()); } // end addPlayer method
 
     /**
-     * Adds a player but enforces the project requirement of maximum 4 players.
-     * Throws IllegalStateException if trying to add more than 4 players.
+     * Adds a player with enforcement of maximum 4 players limit.
+     * 
+     * @param p the player to add
+     * @throws IllegalStateException if trying to add more than 4 players
+     * @throws IllegalArgumentException if player is null
      */
     public void addPlayerWithLimit(Player p) { // add player with max limit
         if (p == null) throw new IllegalArgumentException("Player cannot be null"); // validate player
@@ -68,22 +101,38 @@ public class GameEngine {
         if (logger != null) logger.log(caseId, p.getId(), "PLAYER_JOIN", "", null, p.getName(), "OK", p.getScore()); // log successful player addition
     } // end addPlayerWithLimit method
 
-    // get list of categories
+    /**
+     * Gets the list of available categories.
+     * 
+     * @return list of category names
+     */    
     public List<String> categories() { return new ArrayList<>(board.keySet()); } // end categories method
 
-    // get available values for a category
+    /**
+     * Gets the list of available values for a given category.
+     * 
+     * @param cat the category name
+     * @return list of available point values for the category
+     */
     public List<Integer> valuesForCategory(String cat) { // get available values for a category
         if (!board.containsKey(cat)) return Collections.emptyList(); // return empty list if category not found
         return new ArrayList<>(board.get(cat).keySet()); // return list of values for the category
     } // end valuesForCategory method
 
-    // check if all questions have been answered
+    /**
+     * Checks if all questions have been answered.
+     * 
+     * @return true if all questions have been asked, false otherwise
+     */
     public boolean allAnswered() { // check if all questions have been answered
         for (Map<Integer, Question> m : board.values()) for (Question q : m.values()) if (!q.isAsked()) return false; // if any question not asked,
         return true; // all questions have been asked
     } // end allAnswered method
 
-    // run the game in console mode
+    /**
+     * Runs the game in console mode with user interaction.
+     * Manages turn-based gameplay until all questions are answered or game is quit.
+     */
     public void runConsoleGame() { // run the game in console mode
         try (Scanner sc = new Scanner(System.in)) { // scanner for user input
             if (players.isEmpty()) { // check if players are added
@@ -162,7 +211,24 @@ public class GameEngine {
         }
     }
 
+    /**
+     * Gets the list of turn records.
+     * 
+     * @return list of TurnRecord objects
+     */
     public List<TurnRecord> getRecords() { return records; } // end getRecords method
+    
+    /**
+     * Gets the list of players.
+     * 
+     * @return list of Player objects
+     */   
     public List<Player> getPlayers() { return players; } // end getPlayers method
+    
+    /**
+     * Gets the unique case ID for this game session.
+     * 
+     * @return the case ID string
+     */   
     public String getCaseId() { return caseId; } // end getCaseId method
 }

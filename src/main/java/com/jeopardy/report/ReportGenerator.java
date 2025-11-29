@@ -9,8 +9,26 @@ import java.io.File; // import File class
 import java.io.FileWriter; // import FileWriter for file writing
 import java.util.List; // import List interface
 
+/**
+ * Generates text reports summarizing Jeopardy game sessions.
+ * Creates detailed turn-by-turn reports with final scores.
+ * 
+ * @author Group 33
+ * @version 1.0
+ */
+
 // ReportGenerator class to generate text reports
 public class ReportGenerator {
+    
+    /**
+     * Generates a text report of the game session.
+     * 
+     * @param outFile the file to write the report to
+     * @param players the list of players in the game
+     * @param records the list of turn records from the game
+     * @throws Exception if file writing fails
+     */
+
     public void generateTxtReport(File outFile, List<Player> players, List<TurnRecord> records) throws Exception { // method to generate text report
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(outFile))) { // try-with-resources to ensure BufferedWriter is closed
             bw.write("Multi-Player Jeopardy - Summary Report\n"); // write report title
@@ -47,8 +65,15 @@ public class ReportGenerator {
     } // end generateTxtReport method
 
     /**
-     * Overloaded report generator that logs report generation events via EventLogger when provided.
+     * Overloaded report generator that logs report generation events via EventLogger.
+     * 
+     * @param outFile the file to write the report to
+     * @param players the list of players in the game
+     * @param records the list of turn records from the game
+     * @param logger the event logger for tracking report generation
+     * @throws Exception if file writing fails
      */
+    
     public void generateTxtReport(File outFile, List<Player> players, List<TurnRecord> records, EventLogger logger) throws Exception { // overloaded method to generate text report with logging
         if (logger != null) logger.log("", "SYSTEM", "GENERATE_REPORT", "", null, outFile.getName(), "START", 0); // log report generation start
         generateTxtReport(outFile, players, records); // call original report generation method

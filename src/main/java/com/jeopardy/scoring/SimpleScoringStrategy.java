@@ -3,15 +3,40 @@ package com.jeopardy.scoring; // package declaration
 import com.jeopardy.model.Player; // import Player model
 import com.jeopardy.model.Question; // import Question model
 
+/**
+ * Simple scoring strategy implementation.
+ * Awards question value for correct answers, and optionally penalizes for wrong answers.
+ * 
+ * @author Group 33
+ * @version 1.0
+ */
+
 // SimpleScoringStrategy class implementing ScoringStrategy interface
 public class SimpleScoringStrategy implements ScoringStrategy {
     // field to determine if wrong answers incur negative scoring
+    /** Flag indicating whether wrong answers result in negative scoring */
     private final boolean negativeOnWrong;
+    
+    /**
+     * Constructs a SimpleScoringStrategy with specified penalty behavior.
+     * 
+     * @param negativeOnWrong true to deduct points for wrong answers, false for no penalty
+     */
 
     // constructor to initialize negativeOnWrong field
     public SimpleScoringStrategy(boolean negativeOnWrong) { 
         this.negativeOnWrong = negativeOnWrong; // set negativeOnWrong field
     } // end of constructor
+
+    /**
+     * Scores an answer by comparing it to the correct answer.
+     * Supports both letter answers (A-D) and full text answers.
+     * 
+     * @param player the player who provided the answer (not used in this implementation)
+     * @param question the question being answered
+     * @param givenAnswer the answer provided by the player
+     * @return the question value if correct, negative value if wrong with penalties enabled, otherwise 0
+     */
 
     @Override // override scoreForAnswer method
     public int scoreForAnswer(Player player, Question question, String givenAnswer) { // method to score an answer

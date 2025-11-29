@@ -9,9 +9,26 @@ import java.util.ArrayList; // for list implementation
 import java.util.List; // for list interface
 import java.util.Map; // for map interface
  
+/**
+ * XML format question loader implementation.
+ * Supports multiple XML structures and nested option formats.
+ * 
+ * @author Group 33
+ * @version 1.0
+ */
+
 // XML question loader implementation
 public class XmlQuestionLoader implements QuestionLoader { // implement QuestionLoader interface
     private final XmlMapper xml = new XmlMapper(); // initialize XML object mapper
+
+    /**
+     * Loads questions from an XML file.
+     * Supports multiple XML structures including nested options.
+     * 
+     * @param file the XML file to load questions from
+     * @return list of Question objects parsed from the XML file
+     * @throws Exception if file reading or parsing fails
+     */
 
     @Override // override load method
     @SuppressWarnings("unchecked")
@@ -120,6 +137,13 @@ public class XmlQuestionLoader implements QuestionLoader { // implement Question
         return out; // return list of questions
     } // end load method
 
+    /**
+     * Recursively collects question nodes from the XML tree.
+     * A question node is identified by the presence of Category and QuestionText fields.
+     * @param node the current JSON node being inspected
+     * @param out the list to collect question nodes into
+     */
+
     private static void collectQuestionNodes(JsonNode node, List<JsonNode> out) { // recursively collect question nodes
         if (node == null) return; // return if node is null
         if (node.isObject()) { // if node is an object
@@ -132,6 +156,13 @@ public class XmlQuestionLoader implements QuestionLoader { // implement Question
             for (JsonNode el : node) collectQuestionNodes(el, out); // recurse into array elements
         } // end else if
     } // end collectQuestionNodes method
+
+    /**
+     * Gets the first non-null text value for the given keys from the JsonNode.
+     * @param node the JSON node to search
+     * @param keys the keys to search for in order
+     * @return the first found text value, or null if none found
+     */
 
     private static String firstText(JsonNode node, String... keys) { // get first non-null text for given keys
         if (node == null) return null; // return null if node is null

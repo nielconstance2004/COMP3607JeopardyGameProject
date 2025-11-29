@@ -7,8 +7,26 @@ import java.io.FileReader; // for reading character files
 import java.util.ArrayList; // for list implementation
 import java.util.List; // for list interface
  
+/**
+ * CSV format question loader implementation.
+ * Supports loading questions from CSV files with multiple format variations.
+ * 
+ * @author Group 33
+ * @version 1.0
+ */
+
 // CSV question loader implementation
 public class CsvQuestionLoader implements QuestionLoader { // implement QuestionLoader interface
+    
+    /**
+     * Loads questions from a CSV file.
+     * Supports multiple CSV formats including with and without multiple choice options.
+     * 
+     * @param file the CSV file to load questions from
+     * @return list of Question objects parsed from the CSV file
+     * @throws Exception if file reading or parsing fails
+     */
+
     @Override // override load method
     public List<Question> load(File file) throws Exception { // load questions from file
         List<Question> list = new ArrayList<>(); // initialize output list
@@ -86,6 +104,14 @@ public class CsvQuestionLoader implements QuestionLoader { // implement Question
         } // end try
         return list; // return list of questions
     } // end load method
+
+        /**
+         * Splits a CSV line while respecting quoted fields and escaped quotes.
+         * 
+         * @param line the CSV line to split
+         * @return list of individual field values
+         */
+
         // Simple CSV line splitter that respects double-quoted fields and escaped quotes
         private java.util.List<String> splitCsvLine(String line) {
             java.util.List<String> out = new java.util.ArrayList<>();
